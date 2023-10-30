@@ -7,7 +7,7 @@
 #    This file is part of the example code repository for the paper:
 #
 #      E. Chenchene, H. Huang, J. Qui.
-#      A consensus-based algorithm for non-convex multi-player games,
+#      A consensus-based algorithm for non-convex multiplayer games,
 #      2023. DOI: XX.XXXXX/arXiv.XXXX.YYYYY.
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@ This file contains an implementation of Algorithm 1 for d=1 detailed in
 Section 3 of:
 
 E. Chenchene, H. Huang, J. Qui.
-A consensus-based algorithm for non-convex multi-player games,
+A consensus-based algorithm for non-convex multiplayer games,
 2023. DOI: XX.XXXXX/arXiv.XXXX.YYYYY.
 
 """

@@ -7,7 +7,7 @@
 #    This file is part of the example code repository for the paper:
 #
 #      E. Chenchene, H. Huang, J. Qui.
-#      A consensus-based algorithm for non-convex multi-player games,
+#      A consensus-based algorithm for non-convex multiplayer games,
 #      2023. DOI: XX.XXXXX/arXiv.XXXX.YYYYY.
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@
 Run this file to reproduce all the experiments in Section 3 of:
 
 E. Chenchene, H. Huang, J. Qui.
-A consensus-based algorithm for non-convex multi-player games,
+A consensus-based algorithm for non-convex multiplayer games,
 2023. DOI: XX.XXXXX/arXiv.XXXX.YYYYY.
 
 """
@@ -41,18 +41,18 @@ if __name__ == "__main__":
 
     pathlib.Path("results").mkdir(parents=True, exist_ok=True)
 
-    # print("------------------------------------------------------------------")
-    # print("\n\n *** Generating Figure 1 ***\n")
-    # expm.illustration_1()
+    print("------------------------------------------------------------------")
+    print("\n\n *** Generating Figure 1 ***\n")
+    expm.illustration_1()
 
-    # print("------------------------------------------------------------------")
-    # print("\n\n *** Generating Figure 2 ***")
-    # print("Note: Warnings are disabled to account for expected overflow issues.\n")
+    print("------------------------------------------------------------------")
+    print("\n\n *** Generating Figure 2 ***")
+    print("Note: Warnings are disabled to account for expected overflow issues.\n")
 
-    # warnings.filterwarnings('ignore')
-    # expm.parameters_test_1(Small=test)
-    # expm.parameters_test_2(Small=test)
-    # warnings.filterwarnings("default")
+    warnings.filterwarnings('ignore')
+    expm.parameters_test_1(Small=test)
+    expm.parameters_test_2(Small=test)
+    warnings.filterwarnings("default")
 
     print("------------------------------------------------------------------")
     print("\n\n *** Generating Figure 3 ***\n")
