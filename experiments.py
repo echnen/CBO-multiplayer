@@ -65,17 +65,13 @@ def illustration_1():
                               maxit=500, Verbose=True, Plot=True)
 
 
-def parameters_test_1(Small=False):
+def parameters_test_1():
     '''
     This function generates Figure 2(A).
     '''
 
-    if Small:
-        num_of_runs = 10
-    else:
-        num_of_runs = 500
-
-    maxit = 500
+    num_of_runs = 500
+    maxit = 100
 
     # model parameters
     N = 40
@@ -97,98 +93,100 @@ def parameters_test_1(Small=False):
     Vs_sample = np.zeros((maxit, num_of_runs))
 
     # testing alpha
-    lam = (1e3 + sig ** 2) / 2
+    lam = (1e4 + sig ** 2) / 2
     Alphas = np.logspace(-6, 7, num_of_runs)
 
-    for i in trange(num_of_runs, desc=f'{"Dependence on alpha":<25}'):
+    for i in trange(num_of_runs, desc=f'{"Dependence on alpha":<29}'):
 
         alpha = Alphas[i]
         Vs = opt_one_d.cbo_mpg_one_dim(N, M, a, b, x_opt, X0, dt, sig, lam,
-                                       alpha, maxit, Plot=False, Verbose=False)
+                                       alpha, maxit)
         Vs_alpha[:, i] = Vs
 
     # testing lambda
     Ubs = np.logspace(2, 4, num_of_runs)
-    alpha = 1e6
+    alpha = 1e7
 
-    for i in trange(num_of_runs, desc=f'{"Dependence on lambda":<25}'):
+    for i in trange(num_of_runs, desc=f'{"Dependence on lambda":<29}'):
 
         lam = (Ubs[i] + sig ** 2) / 2
         Vs = opt_one_d.cbo_mpg_one_dim(N, M, a, b, x_opt, X0, dt, sig, lam,
-                                       alpha, maxit, Plot=False, Verbose=False)
+                                       alpha, maxit)
         Vs_lambda[:, i] = Vs
 
     # testing dependence on N
-    lam = (1e3 + sig ** 2) / 2
+    lam = (1e4 + sig ** 2) / 2
     Ns = np.linspace(4, 4000, num_of_runs)
 
-    for i in trange(num_of_runs, desc=f'{"Dependence on N":<25}'):
+    for i in trange(num_of_runs, desc=f'{"Dependence on N":<29}'):
 
         N = int(Ns[i])
         X0 = np.random.normal(x_opt + mu, 5, (N, M))
         Vs = opt_one_d.cbo_mpg_one_dim(N, M, a, b, x_opt, X0, dt, sig, lam,
-                                       alpha, maxit, Plot=False, Verbose=False)
+                                       alpha, maxit)
         Vs_sample[:, i] = Vs
 
     show.plot_compare_choices_Nla(Times, Vs_alpha, Vs_lambda, Vs_sample)
 
 
-def parameters_test_2(Small=False):
+def parameters_test_2():
     '''
     This function generates Figure 2(B).
     '''
 
-    if Small:
-        num_of_runs = 10
-    else:
-        num_of_runs = 500
-
-    maxit = 500
+    num_of_runs = 100
+    maxit = 10
 
     # model parameters
     M = 4
     a, b, x_opt = st.init_pbl_one_dim(M)
 
     # algorithm parameters
-    dt = 1e-5
+    dt = 1e-2
     alpha = 1e6
-    N = 100
+    Ns = [10, 100, 1000]
 
-    Lambdas = np.logspace(-1, 6, num_of_runs)
-    Sigmas = np.logspace(-1, 2, num_of_runs)
+    Lambdas = np.logspace(-1, 2.5, num_of_runs)
+    Sigmas = np.logspace(-1, 1.2, num_of_runs)
 
-    # starting point
-    mu = np.array([-2, 1, 0, 3])
-    X0 = np.random.normal(x_opt + mu, 5, (N, M))
-    V_0 = np.sum(np.square(X0 - x_opt[np.newaxis, :])) / N
+    # placeholders for plots
+    Vs_tot = np.zeros((num_of_runs, num_of_runs,  3))
+    V_0_tot = np.zeros(3)
 
-    # Auxiliary objects
-    Vs_M = np.zeros((num_of_runs, num_of_runs))
+    for (cnt, N) in enumerate(Ns):
 
-    for i in trange(num_of_runs, desc=f'{"Generating image 2(B)":<25}'):
-        for j in range(num_of_runs):
+        # starting point
+        mu = np.array([-2, 1, 0, 3])
+        X0 = np.random.normal(x_opt + mu, 5, (N, M))
+        V_0 = np.sum(np.square(X0 - x_opt[np.newaxis, :])) / N
 
-            lam = Lambdas[i]
-            sig = Sigmas[j]
+        # Auxiliary objects
+        Vs_M = np.zeros((num_of_runs, num_of_runs))
 
-            Vs = opt_one_d.cbo_mpg_one_dim(N, M, a, b, x_opt, X0, dt, sig, lam,
-                                           alpha, maxit)
-            Vs_M[i, j] = min(max(np.log(Vs[-1]), -10), 6)
+        for i in trange(num_of_runs,
+                        desc=f'{f"Generating image 2(B) ({cnt + 1}/3)":<29}',
+                        leave=True):
+            for j in range(num_of_runs):
 
-    show.plot_experiment_2(Lambdas, Sigmas, Vs_M, V_0)
+                lam = Lambdas[i]
+                sig = Sigmas[j]
 
-    return Lambdas, Sigmas, Vs_M, V_0
+                Vs = opt_one_d.cbo_mpg_one_dim(N, M, a, b, x_opt, X0, dt, sig,
+                                               lam, alpha, maxit)
+                Vs_M[i, j] = min(max(np.log(Vs[-1]), -10), 6)
+
+        Vs_tot[:, :, cnt] = Vs_M
+        V_0_tot[cnt] = V_0
+
+    show.plot_experiment_2(Lambdas, Sigmas, Vs_tot, V_0_tot, Ns)
 
 
-def test_ani_vs_iso(Small=False):
+def test_ani_vs_iso():
     '''
     Generates Figure 3.
     '''
 
-    if Small:
-        num_of_runs = 2
-    else:
-        num_of_runs = 20
+    num_of_runs = 20
 
     # model parameters
     d = 5
@@ -269,18 +267,18 @@ def testing_dependence_on_d():
     maxit = 15
 
     # variables algorithm parameters
-    Ds = np.linspace(2, 20, 20)
+    Ds = np.linspace(2, 20, 19)
     Ns = np.linspace(2, 500, 499)
     Alphas = np.logspace(1, 10, 100)
 
     # placeholders
-    Out_dN = np.zeros((20, 499))
-    Out_da = np.zeros((20, 100))
+    Out_dN = np.zeros((19, 499))
+    Out_da = np.zeros((19, 100))
 
     # testing dimension vs sample size N
     alpha = 1e10
 
-    pbar_dN = trange(20, desc=f'{"Generating image 4(A)":<10}', leave=True)
+    pbar_dN = trange(19, desc=f'{"Generating image 4(A)":<10}', leave=True)
     for i in pbar_dN:
 
         # initialize problem on d dimensions
@@ -302,9 +300,8 @@ def testing_dependence_on_d():
 
     # testing dimension vs alpha
     N = 1000
-    Ds = np.linspace(2, 20, 20)
 
-    pbar_da = trange(20, desc=f'{"Generating image 4(B)":<10}', leave=True)
+    pbar_da = trange(19, desc=f'{"Generating image 4(B)":<10}', leave=True)
     for i in pbar_da:
 
         # initialize problem on d dimensions

@@ -35,7 +35,6 @@ import pathlib
 import experiments as expm
 import warnings
 
-test = False
 
 if __name__ == "__main__":
 
@@ -50,13 +49,13 @@ if __name__ == "__main__":
     print("Note: Warnings are disabled to account for expected overflow issues.\n")
 
     warnings.filterwarnings('ignore')
-    expm.parameters_test_1(Small=test)
-    expm.parameters_test_2(Small=test)
+    expm.parameters_test_1()
+    expm.parameters_test_2()
     warnings.filterwarnings("default")
 
     print("------------------------------------------------------------------")
     print("\n\n *** Generating Figure 3 ***\n")
-    expm.test_ani_vs_iso(Small=test)
+    expm.test_ani_vs_iso()
 
     print("------------------------------------------------------------------")
     print("\n\n *** Generating Figure 4 ***\n")

@@ -39,25 +39,16 @@ import structures as st
 
 def compute_consensus_one_dim(alpha, X, N, M, a, b, x_opt):
 
-    x_alpha = np.zeros(M)
     Mn = np.mean(X, axis=0)
+    E = 0.5 * (a[np.newaxis, :] * X - np.sum(Mn) + Mn[np.newaxis, :]
+               - b[np.newaxis, :]) ** 2 + st.nncvx(X - x_opt[np.newaxis, :])
+    W = np.exp(- alpha * (E - np.min(E, axis=0)[np.newaxis, :]))
 
-    for i in range(M):
-
-        Mn_min_i = np.delete(Mn, i)
-        x_i = np.copy(X[:, i])
-        E_i = st.E_one_dim(i, x_i, Mn_min_i, a, b, x_opt)
-
-        E_i_min = min(E_i)
-        W_i = np.exp(- alpha * (E_i - E_i_min))
-        tot_mass = np.sum(W_i)
-        x_alpha[i] = np.sum(W_i * x_i) / tot_mass
-
-    return x_alpha
+    return np.sum(W * X, axis=0) / np.sum(W, axis=0)
 
 
 def cbo_mpg_one_dim(N, M, a, b, x_opt, X0, dt, sig, lam, alpha, maxit=200000,
-                    Plot=True, Verbose=False):
+                    Plot=False, Verbose=False):
 
     sdt = np.sqrt(dt)
 

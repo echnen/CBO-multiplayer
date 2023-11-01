@@ -74,12 +74,6 @@ def phi(z, a, b):
     return np.maximum(a - b * z, 0) ** 2
 
 
-def E_high_dim(x, L, a, b, c):
-
-    return np.sum(x * (c - phi(L @ np.sum(x, axis=1), a, b)[:, np.newaxis]),
-                  axis=0)
-
-
 def d_phi(z, a, b):
 
     return - b * 2 * np.maximum(a - b * z, 0)

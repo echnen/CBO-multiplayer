@@ -85,30 +85,41 @@ def plot_compare_choices_Nla(Times, Vs_alpha, Vs_lambda, Vs_sample):
     plt.show()
 
 
-def plot_experiment_2(Lambdas, Sigmas, Vs_M, V_0):
+def plot_experiment_2(Lambdas, Sigmas, Vs_tot, V_0_tot, Ns):
 
-    fig1, ax2 = plt.subplots(layout='constrained', figsize=(7, 5))
+    fig1, ax = plt.subplots(1, 3, layout='constrained', figsize=(15, 5),
+                            sharey=True)
 
-    CS = ax2.contourf(Lambdas, Sigmas, Vs_M.T, levels=np.linspace(-10, 6, 17))
-    ax2.set_xscale('log')
-    ax2.set_yscale('log')
-    ax2.set_xlabel('Drift parameter $(\lambda)$')
-    ax2.set_ylabel('Diffusion parameter $(\sigma)$')
+    for (cnt, N) in enumerate(Ns):
 
-    ax2.contour(CS, levels=[np.log(V_0)], colors='k')
+        Vs_M = Vs_tot[:, :, cnt]
+        V_0 = V_0_tot[cnt]
 
-    plt.plot(Sigmas ** 2/2, Sigmas, color='r')
-    plt.xlim(Lambdas[0], Lambdas[-1])
-    plt.ylim(Sigmas[0], Sigmas[-1])
-    plt.text(14, 10, '$2 \lambda - \sigma^2=0$', color='red', rotation=47)
-    sm = plt.cm.ScalarMappable(cmap='viridis', norm=plt.Normalize(vmin=-10,
-                                                                  vmax=6))
-    plt.colorbar(sm, ax=ax2)
-    plt.savefig('results/dependence_sigma_and_lambda_2.pdf',
-                bbox_inches='tight')
+        CS = ax[cnt].contourf(Lambdas, Sigmas, Vs_M.T,
+                              levels=np.linspace(-10, 6, 17))
+        ax[cnt].set_xscale('log')
+        ax[cnt].set_yscale('log')
+
+        ax[cnt].set_xlabel('Drift parameter $(\lambda)$')
+        if cnt == 0:
+            ax[cnt].set_ylabel('Diffusion parameter $(\sigma)$')
+
+        ax[cnt].contour(CS, levels=[np.log(V_0)], colors='k')
+
+        ax[cnt].plot(Sigmas ** 2/2, Sigmas, color='r')
+        ax[cnt].set_xlim(Lambdas[0], Lambdas[-1])
+        ax[cnt].set_ylim(Sigmas[0], Sigmas[-1])
+        ax[cnt].set_title(f'$N={N}$')
+
+        if cnt == 2:
+            ax[cnt].text(0.5, 1.5, '$2 \lambda - \sigma^2=0$', color='red',
+                         rotation=40)
+
+        sm = plt.cm.ScalarMappable(cmap='viridis', norm=plt.Normalize(vmin=-10,
+                                                                      vmax=6))
+    plt.colorbar(sm, ax=ax)
+    plt.savefig('results/dependence_sigma_and_lambda.pdf', bbox_inches='tight')
     plt.show()
-
-    return
 
 
 def plot_illustration(Xs, Xs_alpha, x_opt, a, b, size_box):
@@ -164,8 +175,6 @@ def plot_illustration(Xs, Xs_alpha, x_opt, a, b, size_box):
     plt.subplots_adjust(wspace=0, hspace=0)
     plt.savefig("results/illustration_1d.pdf", bbox_inches='tight')
     plt.show()
-
-    return
 
 
 def plot_iso_vs_ani(Times, Vs_i_s, Res_i_s, Vs_a_s, Res_a_s, Vs_i_l, Res_i_l,
