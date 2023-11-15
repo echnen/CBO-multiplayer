@@ -2,7 +2,7 @@
 
 This repository contains the experimental source code to reproduce the numerical experiments in:
 
-* E. Chenchene, H. Huang, J. Qui. A consensus-based algorithm for non-convex multiplayer games. 2023. [ArXiv preprint](https://arxiv.org/abs/XXXX.YYYYY)
+* E. Chenchene, H. Huang, J. Qui. A consensus-based algorithm for non-convex multiplayer games. 2023. [ArXiv preprint](https://arxiv.org/abs/2311.08270)
 
 To reproduce the results of the numerical experiments in Section 3, run:
 ```bash
@@ -14,7 +14,7 @@ If you find this code useful, please cite the above-mentioned paper:
 @article{chq2023,
   author = {Chenchene, Enis and Huang, Hui and Qui, Jinniao},
   title = {A consensus-based algorithm for non-convex multiplayer games},
-  pages = {XXXX.YYYYY},
+  pages = {2311.08270},
   journal = {ArXiv},
   year = {2023}
 }
@@ -24,9 +24,10 @@ If you find this code useful, please cite the above-mentioned paper:
 
 Please make sure to have the following Python modules installed, most of which should be standard.
 
-* [numpy>=1.20.1](https://pypi.org/project/numpy/)
-* [matplotlib>=3.3.4](https://pypi.org/project/matplotlib/)
-* [tqdm>=4.66.1](https://pypi.org/project/tqdm/)
+* [numpy>=1.23.5](https://pypi.org/project/numpy/)
+* [matplotlib>=3.6.2](https://pypi.org/project/matplotlib/)
+* [tqdm>=4.65.0](https://pypi.org/project/tqdm/)
+* [pathlib>=1.0.1](https://pypi.org/project/pathlib/)
 
 ## Acknowledgments  
 

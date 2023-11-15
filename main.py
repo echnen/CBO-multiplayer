@@ -8,7 +8,7 @@
 #
 #      E. Chenchene, H. Huang, J. Qui.
 #      A consensus-based algorithm for non-convex multiplayer games,
-#      2023. DOI: XX.XXXXX/arXiv.XXXX.YYYYY.
+#      2023. DOI: 10.48550/arXiv.2311.08270.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ Run this file to reproduce all the experiments in Section 3 of:
 
 E. Chenchene, H. Huang, J. Qui.
 A consensus-based algorithm for non-convex multiplayer games,
-2023. DOI: XX.XXXXX/arXiv.XXXX.YYYYY.
+2023. DOI: 10.48550/arXiv.2311.08270.
 
 """
 
